@@ -8,17 +8,14 @@ struct node{
     struct node* two;
     struct node* three;
     struct node* four;
-    struct node* five;
-    struct node* six;
-    struct node* seven;
-    struct node* eight;
+    struct node* root;
     int point;
     unsigned int code;
 };
 
-struct node* newNode(pair<int,int> position);
-void findPath(int map[8][8], node *tree, pair<int,int> destination);
-node* checkCell(int map[8][8], int i, int j, char soldier);
+struct node* newNode(pair<int,int>, node*);
+void findPath(int map[8][8], node* , pair<int,int> );
+node* checkCell(int map[8][8], int , int , char , node*);
 
 int main(){
     int map[8][8] = {{2,2,2,2,2,2,2,2},
@@ -30,13 +27,20 @@ int main(){
         {2,2,2,2,2,2,4,2},
         {2,2,2,2,2,2,4,2}};
     //soldier : (4,2)
-    node *root = newNode(make_pair(4,2));
+    node *root = newNode(make_pair(4,2), nullptr);
     return 0;
 }
-node* checkCell(int map[8][8], int i, int j, char soldier){
+node* checkCell(int map[8][8], int i, int j, char soldier, node* root){
+    int x = root->root->position.first;
+    int y = root->root->position.second;
+    if(x == i && y == j){
+        return nullptr;
+    }
+
     int cell = map[i][j];
-    node* temp = newNode(make_pair(i, j));
+    node* temp = newNode(make_pair(i, j), root);
     temp->code = cell;
+
     switch(cell){
         case 2:
             return nullptr;
@@ -92,71 +96,43 @@ node* checkCell(int map[8][8], int i, int j, char soldier){
     }
     return temp;
 }
-void findPath(int map[8][8], node *node, pair<int,int> destination){
+void findPath(int map[8][8], node *node){
     int i = node->position.first;
     int j = node->position.second;
 
-    node->one = checkCell(map, i-1, j+1, 'a');
+    node->one = checkCell(map, i-1, j, 'a', node);
     if(node->one != nullptr){
         if(node->one->code != 4){
-            findPath(map, node->one, make_pair(i-1, j+1));
+            findPath(map, node->one, make_pair(i-1, j));
         }
     }
-    node->two = checkCell(map, i-1, j, 'a');
+    node->two = checkCell(map, i, j-1, 'a', node);
     if(node->two != nullptr){
         if(node->two->code != 4){
-            findPath(map, node->two, make_pair(i-1, j));
+            findPath(map, node->two, make_pair(i, j-1));
         }
     }
-    node->three = checkCell(map, i-1, j-1, 'a');
+    node->three = checkCell(map, i+1, j, 'a', node);
     if(node->three != nullptr){
         if(node->three->code != 4){
-            findPath(map, node->three, make_pair(i-1, j-1));
+            findPath(map, node->three, make_pair(i+1, j));
         }
     }
-    node->eight = checkCell(map, i, j+1, 'a');
-    if(node->eight != nullptr){
-        if(node->eight->code != 4){
-            findPath(map, node->eight, make_pair(i, j+1));
-        }
-    }
-    node->four = checkCell(map, i, j-1, 'a');
+   node->four = checkCell(map, i, j+1, 'a', node);
     if(node->four != nullptr){
         if(node->four->code != 4){
-            findPath(map, node->four, make_pair(i, j-1));
+            findPath(map, node->four, make_pair(i, j+1));
         }
     }
-    node->seven = checkCell(map, i+1, j+1, 'a');
-    if(node->seven != nullptr){
-        if(node->seven->code != 4){
-            findPath(map, node->seven, make_pair(i+1, j+1));
-        }
-    }
-    node->six = checkCell(map, i+1, j, 'a');
-    if(node->six != nullptr){
-        if(node->six->code != 4){
-            findPath(map, node->six, make_pair(i+1, j));
-        }
-    }
-    node->five = checkCell(map, i+1, j-1, 'a');
-    if(node->five != nullptr){
-        if(node->five->code != 4){
-            findPath(map, node->five, make_pair(i+1, j-1));
-        }
-    }
-
 }
-node* newNode(pair<int,int> position){
+node* newNode(pair<int,int> position, node* root){
     node* node = new struct node();
     node->position = position;
     node->one = nullptr;
     node->two = nullptr;
     node->three = nullptr;
     node->four = nullptr;
-    node->five = nullptr;
-    node->six = nullptr;
-    node->seven = nullptr;
-    node->eight = nullptr;
+    node->root = root;
     node->point = 0;
     node->code = 0;
     return node;
