@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <clocale>
-#include "node.hpp"
+#include "../include/node.hpp"
 using namespace std;
 
 void printPlan(int** rawPlan, int width, int height, bool findPath, node* resultNodeA, node* resultNodeB){

@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <fstream>
 #include <climits>
-#include "printPlan.hpp"
-#include "node.hpp"
+#include "../include/printPlan.hpp"
+#include "../include/node.hpp"
 
 using namespace std;
 
