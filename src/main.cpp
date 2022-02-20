@@ -24,6 +24,10 @@ bool findLoop(node*, pair<int,int>);
 int main(int argc, char* argv[]){
     ifstream file;
     file.open(argv[1], fstream::in);
+    if(!file.is_open()){
+        cout << "\033[1;41mError: the map file could not be opened\033[0m" << endl;
+        return 0;
+    }
 
     int height, width;
     stringstream tempi, tempj;
