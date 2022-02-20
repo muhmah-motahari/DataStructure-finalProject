@@ -66,6 +66,7 @@ int main(int argc, char* argv[]){
 
     pair<int,int> soldierB;
     cout << "Please enter location of soldier B: ";
+    cin >> soldierB.first >> soldierB.second;
 
     node *rootB = newNode(make_pair(soldierB.first,soldierB.second), nullptr);
     vector<pair<nodeptr, int>> leafsB;
