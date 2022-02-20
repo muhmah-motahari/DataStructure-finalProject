@@ -4,22 +4,13 @@
 #include <algorithm>
 #include <fstream>
 #include <climits>
-#include "testPlan.cpp"
+#include "printPlan.hpp"
+#include "node.hpp"
 
 using namespace std;
 
 typedef struct node node;
 typedef struct node* nodeptr;
-struct node{
-    pair<int,int> position;
-    struct node* one;
-    struct node* two;
-    struct node* three;
-    struct node* four;
-    struct node* root;
-    int point;
-    unsigned int code;
-};
 
 struct node* newNode(pair<int,int>, node*);
 void findPath(int**, node* , vector<pair<nodeptr,int>>* , int, char);
@@ -58,7 +49,10 @@ int main(int argc, char* argv[]){
         cout << endl;
     }
 
+
+    //  print pre-played game board (without directions)
     printPlan(plan, width, height, false, nullptr, nullptr);
+
 
     pair<int,int> soldierA;
     cout << "Please enter location of soldier A: ";
@@ -156,6 +150,12 @@ int main(int argc, char* argv[]){
             cout << "\t\t****Point and direction length of soldier A and B is equals****" << endl;
         }
     }
+
+
+    //  print played game board (with directions)
+    printPlan(plan, width, height, true, leafsA.begin()->first, leafsB.begin()->first);
+
+
 
     return 0;
 }
