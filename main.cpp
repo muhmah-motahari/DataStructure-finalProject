@@ -42,12 +42,6 @@ int main(int argc, char* argv[]){
             file >> *(*(plan+i)+j);
         }
     }
-    for(int i = 0; i < height; i++){
-        for(int j = 0; j < width; j++){
-            cout << *(*(plan+i)+j) << ' ';
-        }
-        cout << endl;
-    }
 
 
     //  print pre-played game board (without directions)
@@ -69,28 +63,16 @@ int main(int argc, char* argv[]){
     vector<pair<nodeptr, int>> leafsA;
 
 
-    cout << "before findPath function" << endl;
     findPath(plan, rootA, &leafsA, 0, 'a');
     findPath(plan, rootB, &leafsB, 0, 'b');
 
-    cout << "***leafsA size: " << leafsA.size() << endl;
-    cout << "***leafsB size: " << leafsB.size() << endl;
 
-
-    cout << "after findPath function" << endl;
     sort(leafsA.begin(), leafsA.end(), depthNodeComp);
     sort(leafsB.begin(), leafsB.end(), depthNodeComp);
-
-    cout << "after sort function" << endl;
-    cout << "leafsA size: " << leafsA.size() << endl;
-    cout << "leafsB size: " << leafsB.size() << endl;
 
 
     int totalPointA = 0;
     int totalPointB = 0;
-
-    cout << leafsA.at(0).first << ',' << leafsA.at(0).second << endl;
-    //cout << leafsB.at(0).first << ',' << leafsB.at(0).second << endl;
 
     if(leafsA.size() > 0){
         totalPointCalc(leafsA.at(0).first, &totalPointA);   //total point of minimum direction
@@ -103,59 +85,47 @@ int main(int argc, char* argv[]){
         cout << "Soldier B cant move every where!" << endl;
     }
 
-
-    cout << "after totalPointCalc function" << endl;
-
-
-
     vector<pair<int, int>> directionA;   //minimum direction
     vector<pair<int, int>> directionB;   //minimum direction
     directionCalc(leafsA.begin()->first, &directionA);
     if(leafsB.size() > 0){
         directionCalc(leafsB.begin()->first, &directionB);
     }
-    cout << "directionA size: " << directionA.size() << endl;
-    cout << "directionB size: " << directionB.size() << endl;
-//    printDirection(direction);
-//    cout << direction.at(0).first << ',' << direction.at(0).second << endl;
 
     reverse(directionA.begin(), directionA.end());
     reverse(directionB.begin(), directionB.end());
 
+    cout << "A direction: ";
     printDirection(directionA);
+    cout << "B direction: ";
     printDirection(directionB);
-
-
-    cout << "leafs.second A,b: " << leafsA.begin()->second << " , " << leafsB.begin()->second << endl;
-    if(leafsA.begin()->second < leafsB.begin()->second){
-
-        cout << "\t\t****Soldier A won****" << endl;
-
-    }else if(leafsA.begin()->second > leafsB.begin()->second){
-
-        cout << "\t\t****Soldier B won****" << endl;
-
-    }else{
-        if(totalPointA > totalPointB){
-
-            cout << "\t\t****Soldier A won****" << endl;
-            cout << "\t\tDirection length of A and B is equals but total point of A greater than B" << endl;
-
-        }else if(totalPointA < totalPointB){
-
-            cout << "\t\t****Soldier B won****" << endl;
-            cout << "\t\tDirection length of B and A is equals but total point of B greater than A" << endl;
-
-        }else{
-            cout << "\t\t****Point and direction length of soldier A and B is equals****" << endl;
-        }
-    }
+    cout << endl;
 
 
     //  print played game board (with directions)
     printPlan(plan, width, height, true, leafsA.begin()->first, leafsB.begin()->first);
 
 
+
+
+    if(leafsA.begin()->second < leafsB.begin()->second){
+        cout << "\t\t****Soldier A won****" << endl;
+    }else if(leafsA.begin()->second > leafsB.begin()->second){
+        cout << "\t\t****Soldier B won****" << endl;
+    }else{
+        if(totalPointA > totalPointB){
+            cout << "\t\t****Soldier A won****" ;
+            cout << "\t=>\tDirection length of A and B is equals but total point of A greater than B" << endl;
+        }else if(totalPointA < totalPointB){
+            cout << "\t\t****Soldier B won****" ;
+            cout << "\t=>\tDirection length of B and A is equals but total point of B greater than A" << endl;
+        }else{
+            cout << "\t\t****Point and direction length of soldier A and B is equals****" << endl;
+        }
+    }
+
+    cout << "\tSoldier A (direction length, total points): (" << leafsA.begin()->second << ',' << totalPointA << ')' << endl;
+    cout << "\tSoldier B (direction length, total points): (" << leafsB.begin()->second << ',' << totalPointB << ')' << endl;
 
     return 0;
 }
@@ -179,21 +149,15 @@ void directionCalc(node* node, vector<pair<int,int>>* direction){
 }
 
 void totalPointCalc(node* node, int* total){
-    cout << "totalPointCalc execute" << endl;
-    cout << node << endl;
-    cout << ((node->root == nullptr) ? "nullptr" : "not nullptr") << endl;
     if(node->root == nullptr){
-        cout << "\tnode is root" << endl;
         (*total) += node->point;
         return;
     }
-    cout << "total: " << *total << endl;
     totalPointCalc(node->root, total);
     (*total) += node->point;
 }
 
 node* checkCell(int** map, int i, int j, char soldier, node* root){
-    cout << "\t\tcheckCell function executed. i,j: " << i << ',' << j << endl;
     if(root->root != nullptr){
         if(findLoop(root, make_pair(i,j))){
             return nullptr;
@@ -260,7 +224,6 @@ node* checkCell(int** map, int i, int j, char soldier, node* root){
     return temp;
 }
 void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth, char soldier){
-    cout << "findPath function executed:" << endl;
 
     int i = node->position.first;
     int j = node->position.second;
@@ -270,22 +233,15 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
     tempDepth[2] = depth;
     tempDepth[3] = depth;
 
-    cout << "\ti,j: " << i << ',' << j << endl;
-
     if(i > 0){
         node->one = checkCell(map, i-1, j, soldier, node);
         if(node->one != nullptr){
             tempDepth[0]++;
-            cout << "\tfindPath node->one->code: " << node->one->code << endl;
-            cout << "\t*** tempDepth[0]++ => " << tempDepth[0] << endl;
             if(node->one->code != 4){
                 findPath(map, node->one, leafs, tempDepth[0], soldier);
             }else{
-                cout << "\tnode->one->code == 4 " << endl;
-                cout << "\t******* tempDepth[0] => " << tempDepth[0] << endl;
                 pair<nodeptr, int> tempNode (node->one, tempDepth[0]);
                 leafs->push_back(tempNode);
-                cout << "leafs.size: " << leafs->size() << endl;
             }
         }
     }
@@ -294,16 +250,11 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
         node->two = checkCell(map, i, j-1, soldier, node);
         if(node->two != nullptr){
             tempDepth[1]++;
-            cout << "\tfindPath node->two->code: " << node->two->code << endl;
-            cout << "\t*** tempDepth[1]++ => " << tempDepth[1] << endl;
             if(node->two->code != 4){
                 findPath(map, node->two, leafs, tempDepth[1], soldier);
             }else{
-                cout << "\tnode->two->code == 4 " << endl;
-                cout << "\t******* tempDepth[1] => " << tempDepth[1] << endl;
                 pair<nodeptr, int> tempNode (node->two, tempDepth[1]);
                 leafs->push_back(tempNode);
-                cout << "leafs.size: " << leafs->size() << endl;
             }
         }
     }
@@ -312,16 +263,11 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
         node->three = checkCell(map, i+1, j, soldier, node);
         if(node->three != nullptr){
             tempDepth[2]++;
-            cout << "\tfindPath node->three->code: " << node->three->code << endl;
-            cout << "\t*** tempDepth[2]++ => " << tempDepth[2] << endl;
             if(node->three->code != 4){
                 findPath(map, node->three, leafs, tempDepth[2], soldier);
             }else{
-                cout << "\tnode->three->code == 4 " << endl;
-                cout << "\t******* tempDepth[2] => " << tempDepth[2] << endl;
                 pair<nodeptr, int> tempNode (node->three, tempDepth[2]);
                 leafs->push_back(tempNode);
-                cout << "leafs.size: " << leafs->size() << endl;
             }
         }
     }
@@ -330,16 +276,11 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
         node->four = checkCell(map, i, j+1, soldier, node);
         if(node->four != nullptr){
             tempDepth[3]++;
-            cout << "\tfindPath node->four->code: " << node->four->code << endl;
-            cout << "\t*** tempDepth[3]++ => " << tempDepth[3] << endl;
             if(node->four->code != 4){
                 findPath(map, node->four, leafs, tempDepth[3], soldier);
             }else{
-                cout << "\tnode->four->code == 4 " << endl;
-                cout << "\t******* tempDepth[3] => " << tempDepth[3] << endl;
                 pair<nodeptr, int> tempNode (node->four, tempDepth[3]);
                 leafs->push_back(tempNode);
-                cout << "leafs.size: " << leafs->size() << endl;
             }
         }
     }
