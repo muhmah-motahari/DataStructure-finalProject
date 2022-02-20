@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <fstream>
 #include <climits>
+#include "testPlan.cpp"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ struct node{
 };
 
 struct node* newNode(pair<int,int>, node*);
-void findPath(int**, node* , vector<pair<nodeptr,int>>* , int);
+void findPath(int**, node* , vector<pair<nodeptr,int>>* , int, char);
 node* checkCell(int**, int , int , char , node*);
 bool depthNodeComp(pair<nodeptr, int>, pair<nodeptr, int>);
 void totalPointCalc(node*, int*);
@@ -57,6 +58,8 @@ int main(int argc, char* argv[]){
         cout << endl;
     }
 
+    printPlan(plan, width, height, false, nullptr, nullptr);
+
     pair<int,int> soldierA;
     cout << "Please enter location of soldier A: ";
     cin >> soldierA.first >> soldierA.second;
@@ -72,8 +75,8 @@ int main(int argc, char* argv[]){
 
 
     cout << "before findPath function" << endl;
-    findPath(plan, rootA, &leafsA, 0);
-    findPath(plan, rootB, &leafsB, 0);
+    findPath(plan, rootA, &leafsA, 0, 'a');
+    findPath(plan, rootB, &leafsB, 0, 'b');
 
     cout << "***leafsA size: " << leafsA.size() << endl;
     cout << "***leafsB size: " << leafsB.size() << endl;
@@ -202,7 +205,6 @@ node* checkCell(int** map, int i, int j, char soldier, node* root){
 
     switch(cell){
         case 2:
-            cout << "\t\t swtich case cell: cell == 2" << endl;
             return nullptr;
             break;
         case 6:
@@ -256,7 +258,7 @@ node* checkCell(int** map, int i, int j, char soldier, node* root){
     }
     return temp;
 }
-void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth){
+void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth, char soldier){
     cout << "findPath function executed:" << endl;
 
     int i = node->position.first;
@@ -270,13 +272,13 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
     cout << "\ti,j: " << i << ',' << j << endl;
 
     if(i > 0){
-        node->one = checkCell(map, i-1, j, 'a', node);
+        node->one = checkCell(map, i-1, j, soldier, node);
         if(node->one != nullptr){
             tempDepth[0]++;
             cout << "\tfindPath node->one->code: " << node->one->code << endl;
             cout << "\t*** tempDepth[0]++ => " << tempDepth[0] << endl;
             if(node->one->code != 4){
-                findPath(map, node->one, leafs, tempDepth[0]);
+                findPath(map, node->one, leafs, tempDepth[0], soldier);
             }else{
                 cout << "\tnode->one->code == 4 " << endl;
                 cout << "\t******* tempDepth[0] => " << tempDepth[0] << endl;
@@ -288,13 +290,13 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
     }
 
     if(j > 0){
-        node->two = checkCell(map, i, j-1, 'a', node);
+        node->two = checkCell(map, i, j-1, soldier, node);
         if(node->two != nullptr){
             tempDepth[1]++;
             cout << "\tfindPath node->two->code: " << node->two->code << endl;
             cout << "\t*** tempDepth[1]++ => " << tempDepth[1] << endl;
             if(node->two->code != 4){
-                findPath(map, node->two, leafs, tempDepth[1]);
+                findPath(map, node->two, leafs, tempDepth[1], soldier);
             }else{
                 cout << "\tnode->two->code == 4 " << endl;
                 cout << "\t******* tempDepth[1] => " << tempDepth[1] << endl;
@@ -306,13 +308,13 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
     }
 
     if(i < 7){
-        node->three = checkCell(map, i+1, j, 'a', node);
+        node->three = checkCell(map, i+1, j, soldier, node);
         if(node->three != nullptr){
             tempDepth[2]++;
             cout << "\tfindPath node->three->code: " << node->three->code << endl;
             cout << "\t*** tempDepth[2]++ => " << tempDepth[2] << endl;
             if(node->three->code != 4){
-                findPath(map, node->three, leafs, tempDepth[2]);
+                findPath(map, node->three, leafs, tempDepth[2], soldier);
             }else{
                 cout << "\tnode->three->code == 4 " << endl;
                 cout << "\t******* tempDepth[2] => " << tempDepth[2] << endl;
@@ -324,13 +326,13 @@ void findPath(int** map, node *node, vector<pair<nodeptr,int>>* leafs, int depth
     }
 
     if(j < 7){
-        node->four = checkCell(map, i, j+1, 'a', node);
+        node->four = checkCell(map, i, j+1, soldier, node);
         if(node->four != nullptr){
             tempDepth[3]++;
             cout << "\tfindPath node->four->code: " << node->four->code << endl;
             cout << "\t*** tempDepth[3]++ => " << tempDepth[3] << endl;
             if(node->four->code != 4){
-                findPath(map, node->four, leafs, tempDepth[3]);
+                findPath(map, node->four, leafs, tempDepth[3], soldier);
             }else{
                 cout << "\tnode->four->code == 4 " << endl;
                 cout << "\t******* tempDepth[3] => " << tempDepth[3] << endl;
