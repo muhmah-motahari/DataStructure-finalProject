@@ -49,6 +49,7 @@ void printPlan(int** rawPlan, int width, int height, bool findPath, node* result
                      character = L'🪴';
                      break;
                 case 7:
+                case 15:
                      character = L'🏠';
                      break;
                 case 9:
@@ -71,9 +72,13 @@ void printPlan(int** rawPlan, int width, int height, bool findPath, node* result
                      character = L'🍭';
                      break;
                 case 17:
+                      character = L'🟫';
+                     break;
                 case 1:
-                case 3:
-                     character = L'🟫';
+                       character = L'🔳';
+                     break;
+               case 3:
+                     character = L'🟩';
                      break;
                 default:
                     character = L'⬛';
@@ -153,15 +158,21 @@ void printPlan(int** rawPlan, int width, int height, bool findPath, node* result
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             switch(*(*(rawPlan+i)+j)){
-                case 12:
-                case 16:
                 case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 11:
                     printf("\033[1;44m%lc\033[0m", plan[i][j]);
                     break;
 
+                case 10:
+                case 12:
                 case 13:
-                case 8:
-                case 11:
+                case 14:
+                case 15:
+                case 16:
                     printf("\033[1;41m%lc\033[0m", plan[i][j]);
                     break;
 
