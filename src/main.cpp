@@ -113,15 +113,15 @@ int main(int argc, char* argv[]){
 
 
     if(leafsA.begin()->second < leafsB.begin()->second){
-        cout << "\t\t****Soldier A won****" << endl;
+        cout << "\t\t\033[1;31m****\033[0m\033[1;32mSoldier A won\033[0m\033[1;31m****\033[0m" << endl;
     }else if(leafsA.begin()->second > leafsB.begin()->second){
-        cout << "\t\t****Soldier B won****" << endl;
+        cout << "\t\t\033[1;31m****\033[0m\033[1;32mSoldier B won\033[0m\033[1;31m****\033[0m" << endl;
     }else{
         if(totalPointA > totalPointB){
-            cout << "\t\t****Soldier A won****" ;
+            cout << "\t\t\033[1;31m****\033[0m\033[1;32mSoldier A won\033[0m\033[1;31m****\033[0m" << endl;
             cout << "\t=>\tDirection length of A and B is equals but total point of A greater than B" << endl;
         }else if(totalPointA < totalPointB){
-            cout << "\t\t****Soldier B won****" ;
+            cout << "\t\t\033[1;31m****\033[0m\033[1;32mSoldier B won\033[0m\033[1;31m****\033[0m" << endl;
             cout << "\t=>\tDirection length of B and A is equals but total point of B greater than A" << endl;
         }else{
             cout << "\t\t****Point and direction length of soldier A and B is equals****" << endl;
